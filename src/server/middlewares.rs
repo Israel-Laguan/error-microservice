@@ -1,3 +1,5 @@
+use std::time::Instant;
+
 use thruster::errors::ThrusterError;
 use thruster::middleware_fn;
 use thruster::BasicContext as Ctx;
@@ -53,10 +55,26 @@ pub async fn json_error_handler(context: Ctx, next: MiddlewareNext<Ctx>) -> Midd
     };
 
     log::info!("value received: {}", e);
-    log::trace!("Trace is filtered");
 
     context.status(status);
     context.body(&format!("{{\"message\": \"{}\",\"success\":false}}", e));
+
+    Ok(context)
+}
+
+#[middleware_fn]
+pub async fn profile(mut context: Ctx, next: MiddlewareNext<Ctx>) -> MiddlewareResult<Ctx> {
+    let start_time = Instant::now();
+
+    context = next(context).await?;
+
+    let elapsed_time = start_time.elapsed();
+    log::info!(
+        "[{}μs] {} -- {}",
+        elapsed_time.as_micros(),
+        context.request.method(),
+        context.request.path()
+    );
 
     Ok(context)
 }
