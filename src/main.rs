@@ -25,8 +25,6 @@ fn main() {
     server.start("0.0.0.0", 4321);
     match logger {
         Ok(logger) => logger.flush(),
-        _ => {
-            log::trace!("Logger error")
-        }
+        _ => log::trace!("Logger error")
     }
 }
