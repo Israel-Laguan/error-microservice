@@ -8,10 +8,14 @@ use routes::controllers::four_oh_four;
 use routes::controllers::plaintext;
 
 mod server;
+use server::configuration::init_env_variables;
 use server::logger;
 use server::middlewares::json_error_handler;
 
 fn main() {
+    let config = init_env_variables();
+
+    print!("env {:#?}", config.env);
     let logger = logger::init_logger();
 
     let mut app = App::<Request, Ctx, ()>::new_basic()
@@ -25,6 +29,6 @@ fn main() {
     server.start("0.0.0.0", 4321);
     match logger {
         Ok(logger) => logger.flush(),
-        _ => log::trace!("Logger error")
+        _ => log::trace!("Logger error"),
     }
 }

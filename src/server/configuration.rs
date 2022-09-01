@@ -1,82 +1,90 @@
 extern crate dotenv;
 
-use dotenv::dotenv;
+use dotenv::{dotenv, from_filename};
 use serde::Deserialize;
 use std::env;
 
 #[derive(Deserialize, Debug)]
 pub struct Configuration {
     #[serde(default = "default_env")]
-    env: &str,
+    pub env: String,
     #[serde(default = "default_host")]
-    host: &str,
+    pub host: String,
     #[serde(default = "default_port")]
-    port: u16,
+    pub port: u16,
     #[serde(default = "default_postgres_db")]
-    postgres_db: &str,
+    pub postgres_db: String,
     #[serde(default = "default_postgres_user")]
-    postgres_user: &str,
+    pub postgres_user: String,
     #[serde(default = "default_postgres_password")]
-    postgres_password: &str,
+    pub postgres_password: String,
     #[serde(default = "default_postgres_db_url")]
-    postgres_db_url: &str,
+    pub postgres_db_url: String,
     #[serde(default = "default_database_url")]
-    database_url: &str,
+    pub database_url: String,
     #[serde(default = "default_log_level")]
-    log_level: &str,
+    pub log_level: String,
     #[serde(default = "default_whitelist")]
-    log_level: &str,
+    pub whitelist: String,
 }
 
-fn default_env() -> &str {
-    LOCAL
+fn default_env() -> String {
+    "LOCAL".to_string()
 }
 
-fn default_host() -> &str {
-    0.0.0 .0
+fn default_host() -> String {
+    "0.0.0 .0".to_string()
 }
 
 fn default_port() -> u16 {
     8080
 }
 
-fn default_postgres_db() -> &str {
-    "error_microservice"
+fn default_postgres_db() -> String {
+    "error_microservice".to_string()
 }
 
-fn default_postgres_user() -> &str {
-    postgres
+fn default_postgres_user() -> String {
+    "postgres".to_string()
 }
 
-fn default_postgres_password() -> &str {
-    "$3cr3+"
+fn default_postgres_password() -> String {
+    "$3cr3+".to_string()
 }
 
-fn default_postgres_db_url() -> &str {
-    0.0.0 .0
+fn default_postgres_db_url() -> String {
+    "0.0.0 .0".to_string()
 }
 
-fn default_database_url() -> &str {
-    "postgres://postgres@localhost/error_microservice"
+fn default_database_url() -> String {
+    "postgres://postgres@localhost/error_microservice".to_string()
 }
 
-fn default_log_level() -> &str {
-    trace
+fn default_log_level() -> String {
+    "trace".to_string()
 }
 
-fn default_whitelist() -> &str {
-    "localhost:8080"
+fn default_whitelist() -> String {
+    "localhost:8080".to_string()
 }
 
-pub fn init_env_variables() {
+pub fn init_env_variables() -> Configuration{
     let env = match env::var_os("ENV") {
-        Some(v) => v.into_string().unwrap(),
-        None => return "LOCAL",
+        Some(value) => value.into_string().unwrap(),
+        None => "LOCAL".to_string(),
     };
-    let env_file = from_filename(".env.{}", env.to_lowercase()).ok();
+
+    let env_file = from_filename(format!(".env.{}", env.to_lowercase())).ok();
 
     match env_file {
-        Ok(env_file) => return,
-        Error() => dotenv!().ok(),
+        Some(_) => env_file,
+        _ => dotenv().ok(),
+    };
+    match envy::from_env::<Configuration>() {
+        Ok(config) => {
+            println!("{:#?}", config);
+            config
+        },
+        Err(error) => panic!("{:#?}", error),
     }
 }

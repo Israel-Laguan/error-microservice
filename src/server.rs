@@ -3,6 +3,7 @@
 
 pub mod logger;
 pub mod middlewares;
+pub mod configuration;
 // use middlewares::{json_error_handler, profile};
 
 // pub fn init_env_variables() {
