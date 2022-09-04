@@ -1,6 +1,4 @@
-use thruster::{middleware_fn};
-use thruster::{BasicContext as Ctx};
-use thruster::{MiddlewareNext, MiddlewareResult};
+use thruster::{middleware_fn, BasicContext as Ctx, MiddlewareNext, MiddlewareResult};
 
 #[middleware_fn]
 pub async fn four_oh_four(mut context: Ctx, _next: MiddlewareNext<Ctx>) -> MiddlewareResult<Ctx> {
