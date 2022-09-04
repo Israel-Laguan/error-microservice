@@ -1,5 +1,6 @@
 use std::time::Instant;
 
+use serde_json::json;
 use thruster::errors::ThrusterError;
 use thruster::middleware_fn;
 use thruster::BasicContext as Ctx;
@@ -37,10 +38,13 @@ pub async fn json_error_handler(context: Ctx, next: MiddlewareNext<Ctx>) -> Midd
         _ => {
             let mut context = err.context;
 
-            context.body(&format!(
-                "{{\"message\": \"{}\",\"success\":false}}",
-                err.message
-            ));
+            let response: &str = &json!({
+                "message": err.message,
+                "success": false,
+            })
+            .to_string();
+
+            context.body(response);
             context.status(err.status);
 
             return Ok(context);
@@ -56,8 +60,14 @@ pub async fn json_error_handler(context: Ctx, next: MiddlewareNext<Ctx>) -> Midd
 
     log::info!("value received: {}", e);
 
+    let response: &str = &json!({
+        "message": err.message,
+        "success": false,
+    })
+    .to_string();
+
     context.status(status);
-    context.body(&format!("{{\"message\": \"{}\",\"success\":false}}", e));
+    context.body(response);
 
     Ok(context)
 }
