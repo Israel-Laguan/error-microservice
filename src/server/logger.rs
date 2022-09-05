@@ -1,4 +1,4 @@
-use flexi_logger::{Age, Cleanup, Criterion, FileSpec, Logger, Naming, WriteMode};
+use flexi_logger::{Age, Cleanup, Criterion, Duplicate, FileSpec, Logger, Naming, WriteMode};
 
 use crate::core::validator;
 
@@ -12,6 +12,7 @@ pub fn init_logger() -> Result<flexi_logger::LoggerHandle, validator::Error> {
             Naming::Timestamps,       // - let the rotated files have a timestamp in their name
             Cleanup::KeepLogFiles(7), // - keep at most 7 log files
         )
+        .duplicate_to_stderr(Duplicate::Info)
         .write_mode(WriteMode::BufferAndFlush)
         .start()
         .expect("Failed to start logger");

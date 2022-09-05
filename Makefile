@@ -1,6 +1,6 @@
 NAME=error-microservice
 VERSION=$(shell git rev-parse HEAD)
-RUSTV=stable
+RUSTV=nightly
 SEMVER_VERSION=$(shell grep version Cargo.toml | awk -F"\"" '{print $$2}' | head -n 1)
 REPO=error-microservice
 SHELL := /bin/bash

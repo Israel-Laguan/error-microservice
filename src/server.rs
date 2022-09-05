@@ -1,21 +1,26 @@
-// use thruster::async_middleware;
-// use thruster::{App, BasicContext as Ctx, Request};
+use thruster::context::basic_hyper_context::{generate_context, BasicHyperContext as Ctx, HyperRequest};
+use thruster::hyper_server::HyperServer;
+use thruster::{async_middleware, m, App, ThrusterServer};
 
 pub mod configuration;
 pub mod logger;
-pub mod middlewares;
-// use middlewares::{json_error_handler, profile};
+mod middlewares;
+use middlewares::{json_error_handler, profile};
 
-// pub fn init_env_variables() {
+use crate::routes::controllers::{four_oh_four, plaintext};
 
-// }
+pub fn init_app(/*is_prod: bool*/) -> App<HyperRequest, Ctx, ()> {
+    App::<HyperRequest, Ctx, ()>::create(generate_context, ())
+        .use_middleware("/", async_middleware!(Ctx, [profile, json_error_handler]))
+}
 
-// pub fn init_server(is_prod: bool) -> App<Request, Ctx, ()> {
-//     let mut app = App::<Request, Ctx, ()>::new_basic()
-//         .use_middleware("/", async_middleware!(Ctx, [json_error_handler,
-// profile]));
+pub fn init_routes(app: App<HyperRequest, Ctx, ()>) -> App<HyperRequest, Ctx, ()> {
+    app.get("/hello", m![plaintext]).set404(m![four_oh_four])
+}
 
-//     app.connection_timeout = 5000;
-
-//     return app;
-// }
+pub fn run_server(app: App<HyperRequest, Ctx, ()>, host: &str, port: u16) {
+    let server = HyperServer::new(app);
+    server.start(host, port);
+    log::info!("Server started at {}:{}", host, port);
+    println!("Server at {}:{}", host, port)
+}
