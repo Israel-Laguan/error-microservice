@@ -1,5 +1,6 @@
 NAME=error-microservice
 VERSION=$(shell git rev-parse HEAD)
+RUSTV=stable
 SEMVER_VERSION=$(shell grep version Cargo.toml | awk -F"\"" '{print $$2}' | head -n 1)
 REPO=error-microservice
 SHELL := /bin/bash
@@ -74,3 +75,25 @@ tag-semver: build
 		docker tag $(REPO)/$(NAME):$(VERSION) $(REPO)/$(NAME):$(SEMVER_VERSION) ; \
 		docker push $(REPO)/$(NAME):$(SEMVER_VERSION) ; \
 	fi
+
+#
+#  Various Lint tools
+#
+
+install-fmt:
+	rustup component add rustfmt --toolchain $(RUSTV)
+
+check-fmt:	install-fmt
+	cargo +$(RUSTV) fmt -- --check
+
+install-clippy:
+	rustup component add clippy --toolchain $(RUSTV)
+
+check-clippy:	install-clippy
+	cargo +$(RUSTV) clippy --all --all-targets --all-features --tests -- -D warnings -A clippy::upper_case_acronyms
+
+build-all-test:
+	cargo build --tests --all-features
+
+run-all-unit-test:
+	cargo test --all-features
