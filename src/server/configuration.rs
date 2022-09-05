@@ -1,10 +1,11 @@
 extern crate dotenv;
 
 use dotenv::{dotenv, from_filename};
+use secrecy::Secret;
 use serde::Deserialize;
 use std::env;
 
-#[derive(Deserialize, Debug)]
+#[derive(Deserialize, Debug, Clone)]
 pub struct Configuration {
     #[serde(default = "default_env")]
     pub env: String,
@@ -21,7 +22,7 @@ pub struct Configuration {
     #[serde(default = "default_postgres_db_url")]
     pub postgres_db_url: String,
     #[serde(default = "default_database_url")]
-    pub database_url: String,
+    pub database_url: Secret<String>,
     #[serde(default = "default_log_level")]
     pub log_level: String,
     #[serde(default = "default_whitelist")]
@@ -56,8 +57,9 @@ fn default_postgres_db_url() -> String {
     "0.0.0 .0".to_string()
 }
 
-fn default_database_url() -> String {
-    "postgres://postgres@localhost/error_microservice".to_string()
+fn default_database_url() -> Secret<String> {
+    let url = "postgres://postgres@localhost/error_microservice".to_string();
+    Secret::new(url)
 }
 
 fn default_log_level() -> String {
@@ -81,10 +83,8 @@ pub fn init_env_variables() -> Configuration {
         _ => dotenv().ok(),
     };
     match envy::from_env::<Configuration>() {
-        Ok(config) => {
-            println!("{:#?}", config);
-            config
-        }
+        // if we could load the config using the existing env variables - use that
+        Ok(config) => config,
         Err(error) => panic!("{:#?}", error),
     }
 }

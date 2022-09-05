@@ -1,16 +1,19 @@
-use thruster::{middleware_fn, BasicContext as Ctx, MiddlewareNext, MiddlewareResult};
-
-#[middleware_fn]
+use hyper::Body;
+use thruster::{middleware, MiddlewareNext, MiddlewareResult};
+use thruster::context::basic_hyper_context::{
+    BasicHyperContext as Ctx,
+ };
+#[middleware]
 pub async fn four_oh_four(mut context: Ctx, _next: MiddlewareNext<Ctx>) -> MiddlewareResult<Ctx> {
     context.status(404);
-    context.body("Whoops! That route doesn't exist!");
+    context.body = Body::from("Whoops! That route doesn't exist!");
     Ok(context)
 }
 
-#[middleware_fn]
+#[middleware]
 pub async fn plaintext(mut context: Ctx, _next: MiddlewareNext<Ctx>) -> MiddlewareResult<Ctx> {
     let val = "Hello, World!";
-    context.body(val);
+    context.body = Body::from(val);
     log::info!("value received: {}", val);
     log::trace!("Trace is filtered");
     Ok(context)

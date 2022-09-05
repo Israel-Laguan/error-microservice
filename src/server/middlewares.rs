@@ -1,8 +1,9 @@
 use std::time::Instant;
 
 use serde_json::json;
+use thruster::context::basic_hyper_context::BasicHyperContext as Ctx;
 use thruster::errors::ThrusterError;
-use thruster::{middleware_fn, BasicContext as Ctx, MiddlewareNext, MiddlewareResult};
+use thruster::{middleware, MiddlewareNext, MiddlewareResult};
 
 use crate::core::validator;
 trait ErrorExt {
@@ -20,7 +21,7 @@ impl<E: Into<validator::Error>> ErrorExt for E {
     }
 }
 
-#[middleware_fn]
+#[middleware]
 pub async fn json_error_handler(context: Ctx, next: MiddlewareNext<Ctx>) -> MiddlewareResult<Ctx> {
     let res = next(context).await;
 
@@ -70,19 +71,26 @@ pub async fn json_error_handler(context: Ctx, next: MiddlewareNext<Ctx>) -> Midd
     Ok(context)
 }
 
-#[middleware_fn]
+#[middleware]
 pub async fn profile(mut context: Ctx, next: MiddlewareNext<Ctx>) -> MiddlewareResult<Ctx> {
     let start_time = Instant::now();
 
     context = next(context).await?;
 
     let elapsed_time = start_time.elapsed();
-    log::info!(
-        "[{}μs] {} -- {}",
-        elapsed_time.as_micros(),
-        context.request.method(),
-        context.request.path()
-    );
+
+    match &context.hyper_request {
+        Some(hyper_request) => {
+            log::info!(
+                "[{}μs] {} {} {:?}",
+                elapsed_time.as_micros(),
+                hyper_request.request.method(),
+                hyper_request.request.uri(),
+                hyper_request.request.headers()
+            );
+        }
+        None => panic!("problem"),
+    }
 
     Ok(context)
 }
