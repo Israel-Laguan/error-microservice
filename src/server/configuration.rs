@@ -1,9 +1,10 @@
 extern crate dotenv;
 
+use std::env;
+
 use dotenv::{dotenv, from_filename};
 use secrecy::Secret;
 use serde::Deserialize;
-use std::env;
 
 #[derive(Deserialize, Debug, Clone)]
 pub struct Configuration {

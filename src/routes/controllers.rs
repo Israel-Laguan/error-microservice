@@ -1,8 +1,7 @@
 use hyper::Body;
+use thruster::context::basic_hyper_context::BasicHyperContext as Ctx;
 use thruster::{middleware, MiddlewareNext, MiddlewareResult};
-use thruster::context::basic_hyper_context::{
-    BasicHyperContext as Ctx,
- };
+
 #[middleware]
 pub async fn four_oh_four(mut context: Ctx, _next: MiddlewareNext<Ctx>) -> MiddlewareResult<Ctx> {
     context.status(404);

@@ -1,9 +1,6 @@
+use thruster::context::basic_hyper_context::{generate_context, BasicHyperContext as Ctx, HyperRequest};
 use thruster::hyper_server::HyperServer;
-use thruster::{m, async_middleware};
-use thruster::context::basic_hyper_context::{
-    generate_context, BasicHyperContext as Ctx, HyperRequest,
-};
-use thruster::{App, ThrusterServer};
+use thruster::{async_middleware, m, App, ThrusterServer};
 
 mod core;
 

@@ -1,5 +1,34 @@
 # error-microservice
 
+## Cargo config
+
+See the comments in `.cargo/config.yml` and install the required tools for your platform
+
+## Pre-commit hooks
+
+You will need to install `lefthook` tool and generate the Git hooks:
+
+- Follow the [installation instructions](https://github.com/evilmartians/lefthook/blob/master/docs/full_guide.md#installation)
+- `lefthook install`
+
+
+Then, you should be able to verify the installation:
+
+```
+Lefthook run pre-commit
+```
+
+the output should look like this:
+
+```
+✔️  fmt
+✔️  test
+✔️  build
+✔️  clippy
+```
+
+## Installation
+
 First, install rustup
 
 ```sh
@@ -31,6 +60,8 @@ docker build -t error-microservice .
 # Run container
 docker run --rm -p 8080:8080 --name server error-microservice
 ```
+
+
 
 ## Objectives
 
