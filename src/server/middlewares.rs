@@ -1,9 +1,7 @@
 use std::time::Instant;
 
 use thruster::errors::ThrusterError;
-use thruster::middleware_fn;
-use thruster::BasicContext as Ctx;
-use thruster::{MiddlewareNext, MiddlewareResult};
+use thruster::{middleware_fn, BasicContext as Ctx, MiddlewareNext, MiddlewareResult};
 
 use crate::core::validator;
 trait ErrorExt {

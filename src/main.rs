@@ -4,8 +4,7 @@ use thruster::{App, BasicContext as Ctx, Request, Server, ThrusterServer};
 mod core;
 
 mod routes;
-use routes::controllers::four_oh_four;
-use routes::controllers::plaintext;
+use routes::controllers::{four_oh_four, plaintext};
 
 mod server;
 use server::configuration::init_env_variables;

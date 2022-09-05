@@ -68,7 +68,7 @@ fn default_whitelist() -> String {
     "localhost:8080".to_string()
 }
 
-pub fn init_env_variables() -> Configuration{
+pub fn init_env_variables() -> Configuration {
     let env = match env::var_os("ENV") {
         Some(value) => value.into_string().unwrap(),
         None => "LOCAL".to_string(),
@@ -84,7 +84,7 @@ pub fn init_env_variables() -> Configuration{
         Ok(config) => {
             println!("{:#?}", config);
             config
-        },
+        }
         Err(error) => panic!("{:#?}", error),
     }
 }
