@@ -3,8 +3,8 @@ use thruster::{middleware, MiddlewareNext, MiddlewareResult};
 
 #[middleware]
 pub async fn plaintext(mut context: Ctx, _next: MiddlewareNext<Ctx>) -> MiddlewareResult<Ctx> {
-    let val = "Hello, World!";
-    context.body(val);
+    context.status(200);
+    context.body("Hello, World!");
     Ok(context)
 }
 
