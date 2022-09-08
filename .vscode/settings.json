@@ -23,6 +23,7 @@
   },
   "rust-analyzer.checkOnSave.command": "clippy",
   "cSpell.words": [
+    "clippy",
     "Embedder",
     "flexi",
     "helmetjs",
