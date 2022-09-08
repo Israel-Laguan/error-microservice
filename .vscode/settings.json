@@ -22,4 +22,11 @@
     "**/.git": true,
   },
   "rust-analyzer.checkOnSave.command": "clippy",
+  "cSpell.words": [
+    "Embedder",
+    "helmetjs",
+    "noopen",
+    "nosniff",
+    "SAMEORIGIN"
+  ],
 }
