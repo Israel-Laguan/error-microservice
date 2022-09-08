@@ -21,6 +21,4 @@ pub fn init_routes(app: App<HyperRequest, Ctx, ()>) -> App<HyperRequest, Ctx, ()
 pub fn run_server(app: App<HyperRequest, Ctx, ()>, host: &str, port: u16) {
     let server = HyperServer::new(app);
     server.start(host, port);
-    log::info!("Server started at {}:{}", host, port);
-    println!("Server at {}:{}", host, port)
 }

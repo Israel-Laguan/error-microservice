@@ -7,6 +7,7 @@ use thruster::errors::ThrusterError;
 use thruster::{middleware, Context, MiddlewareNext, MiddlewareResult};
 
 use crate::core::validator;
+
 trait ErrorExt {
     fn context(self, context: Ctx) -> ThrusterError<Ctx>;
 }

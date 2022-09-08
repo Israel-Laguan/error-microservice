@@ -1,5 +1,3 @@
-extern crate dotenv;
-
 use std::env;
 
 use dotenv::{dotenv, from_filename};
