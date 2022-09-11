@@ -137,9 +137,10 @@ pub async fn cors(mut context: Ctx, next: MiddlewareNext<Ctx>) -> MiddlewareResu
             .request
             .headers()
             .get("Origin")
-            .map(|header_values| header_values.to_str().unwrap().to_string())
-            .unwrap();
-        origin_env.split(',').find(|v| v == &header).unwrap_or("*")
+            .map(|origin| origin.to_str().unwrap().to_string())
+            .unwrap_or_else(|| "*".to_string());
+
+        origin_env.split(',').find(|v| v == &header).unwrap_or("")
     } else {
         &origin_env
     };
