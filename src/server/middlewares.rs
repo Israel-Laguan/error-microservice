@@ -127,7 +127,7 @@ pub async fn helmet(mut context: Ctx, next: MiddlewareNext<Ctx>) -> MiddlewareRe
 
 #[middleware]
 pub async fn cors(mut context: Ctx, next: MiddlewareNext<Ctx>) -> MiddlewareResult<Ctx> {
-    let origin_env = std::env::var("CORS_ORIGIN").unwrap_or_else(|_| "*".to_string());
+    let origin_env = std::env::var("WHITELIST").unwrap_or_else(|_| "*".to_string());
 
     let origin = if origin_env.contains(',') {
         let header = context
