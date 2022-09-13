@@ -124,3 +124,30 @@ pub async fn helmet(mut context: Ctx, next: MiddlewareNext<Ctx>) -> MiddlewareRe
 
     Ok(context)
 }
+
+#[middleware]
+pub async fn cors(mut context: Ctx, next: MiddlewareNext<Ctx>) -> MiddlewareResult<Ctx> {
+    let origin_env = std::env::var("WHITELIST").unwrap_or_else(|_| "*".to_string());
+
+    let origin = if origin_env.contains(',') {
+        let header = context
+            .hyper_request
+            .as_ref()
+            .unwrap()
+            .request
+            .headers()
+            .get("Origin")
+            .map(|origin| origin.to_str().unwrap().to_string())
+            .unwrap_or_else(|| "*".to_string());
+
+        origin_env.split(',').find(|v| v == &header).unwrap_or("")
+    } else {
+        &origin_env
+    };
+
+    context.set("Access-Control-Allow-Origin", origin);
+    context.set("Access-Control-Allow-Headers", "*");
+    context.set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+
+    next(context).await
+}
