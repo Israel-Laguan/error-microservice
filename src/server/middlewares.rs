@@ -149,5 +149,22 @@ pub async fn cors(mut context: Ctx, next: MiddlewareNext<Ctx>) -> MiddlewareResu
     context.set("Access-Control-Allow-Headers", "*");
     context.set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
 
-    next(context).await
+    context = next(context).await?;
+
+    Ok(context)
+}
+
+// Added in top of helmet defaults
+// and OWASP recommendations here https://owasp.org/www-project-secure-headers/#configuration-proposal
+#[middleware]
+pub async fn recommended_headers_https(mut context: Ctx, next: MiddlewareNext<Ctx>) -> MiddlewareResult<Ctx> {
+    context.set("Clear-Site-Data", "*");
+    context.set(header::STRICT_TRANSPORT_SECURITY.as_ref(), "max-age=31536000; includeSubDomains");
+    context.set(header::X_XSS_PROTECTION.as_ref(), "deny");
+    context.set(header::CACHE_CONTROL.as_ref(), "no-store, max-age=0");
+    context.set(header::PRAGMA.as_ref(), "no-cache");
+
+    context = next(context).await?;
+
+    Ok(context)
 }

@@ -29,6 +29,7 @@
     "helmetjs",
     "noopen",
     "nosniff",
+    "OWASP",
     "SAMEORIGIN"
   ],
 }
