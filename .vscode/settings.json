@@ -24,9 +24,11 @@
   "rust-analyzer.checkOnSave.command": "clippy",
   "cSpell.words": [
     "clippy",
+    "dotenv",
     "Embedder",
     "flexi",
     "helmetjs",
+    "middlewares",
     "noopen",
     "nosniff",
     "OWASP",
