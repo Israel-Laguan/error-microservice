@@ -3,25 +3,9 @@ use std::time::Instant;
 use hyper::header;
 use serde_json::json;
 use thruster::context::basic_hyper_context::BasicHyperContext as Ctx;
-use thruster::errors::ThrusterError;
 use thruster::{middleware, Context, MiddlewareNext, MiddlewareResult};
 
 use crate::core::validator;
-
-trait ErrorExt {
-    fn context(self, context: Ctx) -> ThrusterError<Ctx>;
-}
-
-impl<E: Into<validator::Error>> ErrorExt for E {
-    fn context(self, context: Ctx) -> ThrusterError<Ctx> {
-        ThrusterError {
-            context,
-            message: "Failed to handle error".to_string(),
-            status: 500,
-            cause: Some(Box::new(self.into())),
-        }
-    }
-}
 
 #[middleware]
 pub async fn json_error_handler(context: Ctx, next: MiddlewareNext<Ctx>) -> MiddlewareResult<Ctx> {
@@ -58,8 +42,6 @@ pub async fn json_error_handler(context: Ctx, next: MiddlewareNext<Ctx>) -> Midd
         validator::Error::InvalidId { .. } => 400,
         validator::Error::FileNotFound { .. } => 404,
     };
-
-    log::info!("value received: {}", e);
 
     let response: &str = &json!({
         "message": err.message,

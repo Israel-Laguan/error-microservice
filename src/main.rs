@@ -1,14 +1,15 @@
 mod core;
 mod routes;
-
+use routes::init_routes;
 mod server;
 use server::configuration::init_env_variables;
-use server::{init_app, init_routes, logger, run_server};
+use server::logger::init_logger;
+use server::{init_app, run_server};
 
 fn main() {
     let config = init_env_variables();
 
-    let logger = logger::init_logger();
+    let logger = init_logger();
 
     let app = init_app();
 
