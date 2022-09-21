@@ -1,8 +1,9 @@
 [package]
 name = "error-microservice"
 version = "0.1.0"
-edition = "2021"
 authors = ["Israel Rosales Laguan<israellaguan@gmail.com>"]
+edition = "2021"
+description = "API to Manage errors for different applications"
 
 [[bin]]
 doc = false
