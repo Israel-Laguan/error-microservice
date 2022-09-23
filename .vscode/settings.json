@@ -28,6 +28,7 @@
     "Embedder",
     "flexi",
     "helmetjs",
+    "lefthook",
     "middlewares",
     "noopen",
     "nosniff",
