@@ -17,3 +17,5 @@ Cargo.lock
 # other local files
 .env
 *.log
+cert.pem
+key.pem
