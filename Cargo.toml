@@ -13,12 +13,13 @@ path = "src/main.rs"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-hyper = { version = "0.14", features = ["http1", "http2", "runtime", "server", "stream"] }
+cornucopia = "0.8.2"
 diesel = { version = "2.0", features = ["postgres", "r2d2", "uuid"] }
-envy = "0.4"
 dotenv = "0.15"
+envy = "0.4"
 flexi_logger = { version = "0.23", features = ["async", "compress", "use_chrono_for_offset"] }
 futures = "0.3"
+hyper = { version = "0.14", features = ["http1", "http2", "runtime", "server", "stream"] }
 lazy_static = "1.4"
 log = "0.4"
 r2d2 = "0.8"

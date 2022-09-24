@@ -24,8 +24,8 @@ pub fn run_server(app: App<HyperRequest, Ctx, ()>, host: &str, port: u16, is_pro
     match is_prod {
         Some(_is_prod) => {
             let mut server = SSLHyperServer::new(app);
-            server.cert(include_bytes!("../cert.pem").to_vec());
-            server.key(include_bytes!("../key.pem").to_vec());
+            server.cert(include_bytes!("cert.pem").to_vec());
+            server.key(include_bytes!("key.pem").to_vec());
             server.start(host, port);
         }
         None => HyperServer::new(app).start(host, port),
