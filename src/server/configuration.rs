@@ -22,3 +22,11 @@ pub fn init_env_variables() -> Configuration {
         Err(error) => panic!("{:#?}", error),
     }
 }
+
+pub fn env_variables() -> Configuration {
+    match envy::from_env::<Configuration>() {
+        // if we could load the config using the existing env variables - use that
+        Ok(config) => config,
+        Err(error) => panic!("{:#?}", error),
+    }
+}

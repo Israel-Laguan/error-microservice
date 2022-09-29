@@ -6,7 +6,7 @@ services:
       POSTGRES_USER: "${POSTGRES_USER}"
       POSTGRES_DB: "${POSTGRES_DB}"
       POSTGRES_PASSWORD: "${POSTGRES_PASSWORD}"
-    image: postgres:9.6-alpine
+    image: postgres:14-alpine
     ports:
       - "5432:5432"
   web:
@@ -19,3 +19,9 @@ services:
       DATABASE_URL: "postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db/${POSTGRES_DB}"
     ports:
       - "8080:8080"
+
+networks:
+  default:
+    ipam:
+      config:
+      - subnet: 172.30.0.0/16

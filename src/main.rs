@@ -8,14 +8,13 @@ use server::{init_app, run_server};
 
 mod cornucopia;
 
-#[allow(unused_variables)]
 fn main() {
     let config = init_env_variables();
     let is_prod = Some(config.env == "PRODUCTION");
 
     let logger = init_logger();
 
-    let app = init_app(Some(false));
+    let app = init_app(is_prod);
 
     let routed_app = init_routes(app);
 

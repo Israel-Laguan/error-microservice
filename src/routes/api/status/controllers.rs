@@ -5,21 +5,21 @@ use serde_json::json;
 use thruster::context::basic_hyper_context::BasicHyperContext as Ctx;
 use thruster::{middleware, MiddlewareNext, MiddlewareResult};
 
-// use thruster::ssl_hyper_server::SSLHyperServer;
-
 use deadpool_postgres::{Config, Runtime, Pool};
 use tokio_postgres::NoTls;
 
 use crate::cornucopia::queries::create_error::insert_error;
 use crate::cornucopia::queries::read_errors::errors;
+use crate::server::configuration::env_variables;
 
 fn db_pool() -> Pool {
+    let conf = env_variables();
     let mut cfg = Config::new();
-    cfg.user = Some(String::from("postgres"));
-    cfg.password = Some(String::from("postgres"));
-    cfg.host = Some(String::from("127.0.0.1"));
+    cfg.user = Some(conf.postgres_user);
+    cfg.password = Some(conf.postgres_password);
+    cfg.host = Some(conf.postgres_db_url);
     cfg.port = Some(5435);
-    cfg.dbname = Some(String::from("postgres"));
+    cfg.dbname = Some(conf.postgres_db);
     let pool = cfg.create_pool(Some(Runtime::Tokio1), NoTls);
     match pool {
         Ok(pool) => pool,
