@@ -24,6 +24,8 @@ futures = "0.3"
 hyper = { version = "0.14", features = ["http1", "http2", "runtime", "server", "stream"] }
 lazy_static = "1.4"
 log = "0.4"
+openssl = { version = "0.10.42", features = ["vendored"] }
+openssl-sys = {version = "0.9.76", features = ["vendored"]}
 postgres-types = { version = "0.2.4", features = ["derive"] }
 r2d2 = "0.8"
 secrecy = { version = "0.8", features = ["serde"] }

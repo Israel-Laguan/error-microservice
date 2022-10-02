@@ -1,3 +1,9 @@
+## Adapted from https://dev.to/karanpratapsingh/seeding-postgres-with-docker-19n7
+FROM postgres:14-alpine as db
+WORKDIR /app
+COPY ./db_init.sh /docker-entrypoint-initdb.d
+COPY ./schema.sql ./scripts/db/dump.sql
+
 # Adapted from https://github.com/mr-pascal/medium-rust-dockerize/blob/master/Dockerfile
 FROM rustlang/rust:nightly-slim as builder
 
@@ -11,11 +17,8 @@ WORKDIR /usr/src/error-microservice
 
 RUN apt-get update && apt-get install -y openssl build-essential pkg-config libssl-dev
 
-## Install target platform (Cross-Compilation) --> Needed for Alpine
-RUN rustup target add x86_64-unknown-linux-gnu
-
 # This is a dummy build to get the dependencies cached.
-RUN cargo build --target x86_64-unknown-linux-gnu --release
+RUN cargo build --release
 
 COPY src /usr/src/error-microservice/src/
 
@@ -23,16 +26,10 @@ COPY src /usr/src/error-microservice/src/
 RUN touch /usr/src/error-microservice/src/main.rs
 
 # This is the actual application build.
-RUN cargo build --target x86_64-unknown-linux-gnu --release
-
-################
-##### Runtime
-FROM alpine:3.16.0 AS runtime
-RUN apk --no-cache add ca-certificates
-
-# Copy application binary from builder image
-COPY --from=builder /usr/src/error-microservice/target/x86_64-unknown-linux-gnu/release/error-microservice /usr/local/bin
+# RUN cargo build --release
 
 EXPOSE 8080
 
-CMD ["/usr/local/bin/error-microservice"]
+# CMD [ "cargo run" ]
+
+# CMD ["/usr/src/error-microservice/target/release/error-microservice"]

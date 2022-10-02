@@ -15,10 +15,11 @@ use crate::server::configuration::env_variables;
 fn db_pool() -> Pool {
     let conf = env_variables();
     let mut cfg = Config::new();
+    log::error!("{}", conf.postgres_db_url);
     cfg.user = Some(conf.postgres_user);
     cfg.password = Some(conf.postgres_password);
     cfg.host = Some(conf.postgres_db_url);
-    cfg.port = Some(5435);
+    cfg.port = Some(5432);
     cfg.dbname = Some(conf.postgres_db);
     let pool = cfg.create_pool(Some(Runtime::Tokio1), NoTls);
     match pool {

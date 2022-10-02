@@ -19,3 +19,5 @@ Cargo.lock
 *.log
 cert.pem
 key.pem
+
+pgadmin_data

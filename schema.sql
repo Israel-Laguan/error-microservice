@@ -1,4 +1,5 @@
-CREATE TABLE errors (
+-- CreateTable
+CREATE TABLE IF NOT EXISTS errors (
    id uuid DEFAULT gen_random_uuid() PRIMARY KEY NOT NULL,
    app_id varchar(16) NOT NULL,
    user_id varchar(16),

@@ -10,7 +10,7 @@ mod cornucopia;
 
 fn main() {
     let config = init_env_variables();
-    let is_prod = Some(config.env == "PRODUCTION");
+    let is_prod = Some(false); //config.env == "PRODUCTION");
 
     let logger = init_logger();
 
