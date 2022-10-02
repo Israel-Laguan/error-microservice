@@ -23,7 +23,11 @@
   },
   "rust-analyzer.checkOnSave.command": "clippy",
   "cSpell.words": [
+    "chrono",
     "clippy",
+    "Codegen",
+    "dbname",
+    "deadpool",
     "dotenv",
     "Embedder",
     "flexi",
@@ -33,6 +37,8 @@
     "noopen",
     "nosniff",
     "OWASP",
-    "SAMEORIGIN"
+    "proto",
+    "SAMEORIGIN",
+    "serde"
   ],
 }
