@@ -1,6 +1,7 @@
 mod core;
 mod routes;
 use routes::init_routes;
+
 mod server;
 use server::configuration::init_env_variables;
 use server::logger::init_logger;

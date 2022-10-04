@@ -1,10 +1,10 @@
 use thruster::context::basic_hyper_context::{generate_context, BasicHyperContext as Ctx, HyperRequest};
-use thruster::{m, App};
+use thruster::App;
 
 mod errors;
+use errors::errors_app;
 
-use errors::list;
-
-pub fn errors_app() -> App<HyperRequest, Ctx, ()> {
-    App::<HyperRequest, Ctx, ()>::create(generate_context, ()).get("/", m![list])
+pub fn v1_app() -> App<HyperRequest, Ctx, ()> {
+    let errors = errors_app();
+    App::<HyperRequest, Ctx, ()>::create(generate_context, ()).router("/errors", errors)
 }

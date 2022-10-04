@@ -2,7 +2,6 @@ use thruster::context::basic_hyper_context::{generate_context, BasicHyperContext
 use thruster::{m, App};
 
 mod controllers;
-
 use controllers::{about, am_i_up, dependency};
 
 pub fn status_app() -> App<HyperRequest, Ctx, ()> {
